@@ -59,7 +59,7 @@ async fn handle_request(req: Request<Body>) -> Result<Response<Body>, Infallible
     res.headers_mut().unwrap().extend(HEADER_MAP.clone());
 
     if path_replaced == "policy"
-        || (!path_replaced.contains("hu") && path_replaced.ends_with("policy"))
+        || (!path_replaced.contains("/hu/") && path_replaced.ends_with("policy"))
     {
         return Ok(res.body(Body::from("")).unwrap());
     }
