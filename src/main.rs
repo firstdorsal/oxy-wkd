@@ -15,7 +15,7 @@ pub const BASE_PATH: &str = "/public_pgp_keys";
 use hyper::{
     header::{HeaderName, HeaderValue},
     service::{make_service_fn, service_fn},
-    HeaderMap,
+    HeaderMap, StatusCode,
 };
 use hyper::{Body, Request, Response, Server};
 use std::convert::Infallible;
@@ -55,6 +55,13 @@ async fn handle_request(req: Request<Body>) -> Result<Response<Body>, Infallible
 
     let path_replaced = path.replace("/.well-known/openpgpkey/", "");
 
+    let mut res = Response::builder().status(200);
+    res.headers_mut().unwrap().extend(HEADER_MAP.clone());
+
+    if path_replaced == "policy" {
+        return Ok(res.body(Body::from("")).unwrap());
+    }
+
     let req_domain = if path_replaced.starts_with("hu") {
         // simple method
         if req.uri().host().is_some() {
@@ -83,10 +90,11 @@ async fn handle_request(req: Request<Body>) -> Result<Response<Body>, Infallible
         res.headers_mut().extend(HEADER_MAP.clone());
         Ok(res)
     } else {
-        Ok(Response::builder()
-            .status(404)
-            .body(Body::from("Not found"))
-            .unwrap())
+        let mut res = Response::new(Body::from("Not found"));
+        res.headers_mut().extend(HEADER_MAP.clone());
+        *res.status_mut() = StatusCode::NOT_FOUND;
+
+        Ok(res)
     }
 }
 
