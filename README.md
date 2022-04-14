@@ -2,27 +2,29 @@
 
 A ultra small(**316KB**) container running a ultra fast rust-hyper webserver to easily serve your armored public pgp keys from plain text files via wkd (Web Key Directory)
 
+You will need some reverse proxy for this.
+
 ## `firstdorsal/oxy-wkd`
 
 [dockerhub](https://hub.docker.com/r/firstdorsal/oxy-wkd)
 
 # Getting started
 
-## install docker, docker-compose, and use traefik for maximum convenience
+## Install docker and optionally docker-compose and traefik for maximum convenience
 
-## get the public key
+## Get the public key
 
-### thunderbird
+### Thunderbird
 
 menu > extras > manage OpenPGP keys > right click the key > copy public key
 
-### command line
+### Command line
 
 ```sh
 gpg -a --export paul@example.com > public-keys/paul@example.com
 ```
 
-## copy your public keys in a folder
+## Copy your public keys in a folder
 
 Create a file in a new public keys directory with the name of your key id (for example: paul@example.com) and insert your armored public key into the file.
 
@@ -39,7 +41,7 @@ mQINBGEEBj4BEADU4TZNYDN2VkxUUrZtNtMF1UVBL9ZuEfGdJ/z6IHWmQGnyYcEt
 
 ```
 
-## create a docker compose file
+## Create a docker compose file
 
 `rp` is a network that traefik has access to. Your situation might look different <br/>
 Of course you can use any reverse proxy for this.
@@ -73,12 +75,12 @@ networks:
         name: rp
 ```
 
-## start it
+## Start it
 
 ```sh
 docker-compose up -d
 ```
 
-## check here if it works
+## Check here if it works
 
 https://metacode.biz/openpgp/web-key-directory

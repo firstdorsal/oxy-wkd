@@ -98,6 +98,7 @@ fn read_pgp_keys() -> HashMap<String, Vec<u8>> {
         let entry = entry.expect("Could not read entry");
         let path = entry.path();
         let file_name = path.file_name().unwrap().to_str().unwrap();
+        println!("{:?}", file_name);
 
         let (local_part, domain) = file_name.split_at(file_name.find('@').unwrap());
         let domain = domain.replace('@', "");
@@ -111,7 +112,6 @@ fn read_pgp_keys() -> HashMap<String, Vec<u8>> {
             key,
         );
     }
-    println!("{:?}", pgp_keys);
     pgp_keys
 }
 
