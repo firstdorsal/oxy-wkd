@@ -57,10 +57,18 @@ async fn handle_request(req: Request<Body>) -> Result<Response<Body>, Infallible
 
     let req_domain = if path_replaced.starts_with("hu") {
         // simple method
-        req.uri().host().unwrap_or("").to_string()
+        if req.uri().host().is_some() {
+            req.uri().host().unwrap()
+        } else {
+            req.headers()
+                .get(HeaderName::from_static("X-Forwarded-Host"))
+                .unwrap()
+                .to_str()
+                .unwrap()
+        }
     } else {
         // advanced method
-        path_replaced.split("/hu").next().unwrap_or("").to_string()
+        path_replaced.split("/hu").next().unwrap_or("")
     };
 
     let pgp_key_name = format!(
