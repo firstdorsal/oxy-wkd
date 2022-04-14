@@ -24,7 +24,7 @@ gpg -a --export paul@example.com > public-keys/paul@example.com
 
 ## copy your public keys in a folder
 
-create a file in a new public keys directory with the name of your key id (for example: paul@example.com) and insert your armored public key into the file.
+Create a file in a new public keys directory with the name of your key id (for example: paul@example.com) and insert your armored public key into the file.
 
 **./public-keys/paul@example.com**
 
