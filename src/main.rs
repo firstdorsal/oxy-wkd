@@ -55,7 +55,7 @@ async fn handle_request(req: Request<Body>) -> Result<Response<Body>, Infallible
 
     let path_replaced = path.replace("/.well-known/openpgpkey/", "");
 
-    let mut res = Response::builder().status(200);
+    let mut res = Response::builder();
     res.headers_mut().unwrap().extend(HEADER_MAP.clone());
 
     if path_replaced == "policy" {
@@ -86,15 +86,10 @@ async fn handle_request(req: Request<Body>) -> Result<Response<Body>, Infallible
 
     if pgp_keys.contains_key(&pgp_key_name) {
         let key = pgp_keys.get(&pgp_key_name).unwrap();
-        let mut res = Response::new(Body::from(key.clone()));
-        res.headers_mut().extend(HEADER_MAP.clone());
-        Ok(res)
-    } else {
-        let mut res = Response::new(Body::from("Not found"));
-        res.headers_mut().extend(HEADER_MAP.clone());
-        *res.status_mut() = StatusCode::NOT_FOUND;
 
-        Ok(res)
+        Ok(res.body(Body::from(key.clone())).unwrap())
+    } else {
+        Ok(res.status(404).body(Body::from("Not Found")).unwrap())
     }
 }
 
