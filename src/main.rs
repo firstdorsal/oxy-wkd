@@ -13,7 +13,7 @@ use zbase32::encode_full_bytes;
 pub const BASE_PATH: &str = "/public_pgp_keys";
 
 use hyper::{
-    header::{HeaderName, HeaderValue},
+    header::{HeaderName, HeaderValue, FORWARDED, HOST},
     service::{make_service_fn, service_fn},
     HeaderMap, StatusCode,
 };
@@ -66,12 +66,12 @@ async fn handle_request(req: Request<Body>) -> Result<Response<Body>, Infallible
         // simple method
         if req.uri().host().is_some() {
             req.uri().host().unwrap()
+        } else if req.headers().get(HOST).is_some() {
+            req.headers().get(HOST).unwrap().to_str().unwrap()
+        } else if req.headers().get(FORWARDED).is_some() {
+            req.headers().get(FORWARDED).unwrap().to_str().unwrap()
         } else {
-            req.headers()
-                .get(HeaderName::from_static("X-Forwarded-Host"))
-                .unwrap()
-                .to_str()
-                .unwrap()
+            ""
         }
     } else {
         // advanced method
