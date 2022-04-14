@@ -82,7 +82,6 @@ async fn handle_request(req: Request<Body>) -> Result<Response<Body>, Infallible
         "{} {} {}",
         req_local_part, req_local_part_encoded, req_domain
     );
-    println!("{}", pgp_key_name);
 
     if pgp_keys.contains_key(&pgp_key_name) {
         let key = pgp_keys.get(&pgp_key_name).unwrap();

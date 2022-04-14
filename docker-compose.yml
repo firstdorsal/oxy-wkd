@@ -3,7 +3,7 @@ services:
     oxy-wkd-prod:
         build:
             context: .
-            dockerfile: dev.Dockerfile
+            dockerfile: Dockerfile
         ports:
             - "3050:80"
         volumes:
