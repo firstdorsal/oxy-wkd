@@ -1,8 +1,5 @@
 use lazy_static::lazy_static;
-use openpgp::{
-    armor::{Kind, Reader, ReaderMode},
-    Message,
-};
+use openpgp::armor::{Reader, ReaderMode};
 use sequoia_openpgp as openpgp;
 
 use hashbrown::HashMap;
@@ -15,7 +12,7 @@ pub const BASE_PATH: &str = "/public_pgp_keys";
 use hyper::{
     header::{HeaderName, HeaderValue, FORWARDED, HOST},
     service::{make_service_fn, service_fn},
-    HeaderMap, StatusCode,
+    HeaderMap,
 };
 use hyper::{Body, Request, Response, Server};
 use std::convert::Infallible;
