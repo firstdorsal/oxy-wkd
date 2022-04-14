@@ -1,0 +1,10 @@
+version: "3.7"
+services:
+    oxy-wkd-prod:
+        build:
+            context: .
+            dockerfile: dev.Dockerfile
+        ports:
+            - "3050:80"
+        volumes:
+            - ./examples/public_pgp_keys:/public_pgp_keys
