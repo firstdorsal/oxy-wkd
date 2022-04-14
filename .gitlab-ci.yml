@@ -8,6 +8,7 @@ image: alpine
 
 variables:
     IMAGE_NAME: oxy-wkd
+    USER_NAME: firstdorsal
 
 stages:
     - docker-build-and-publish
